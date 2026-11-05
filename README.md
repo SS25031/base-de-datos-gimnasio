@@ -2,7 +2,7 @@
 
 Este repositorio contiene la implementación de la base de datos para el sistema de gestión de un gimnasio, desarrollada en PostgreSQL y desplegada mediante Docker.
 
-## 🚀 Cómo levantar el proyecto (Para el equipo)
+## Cómo levantar el proyecto (Para el equipo)
 
 ### Requisitos previos
 - Tener instalado [Docker Desktop](https://www.docker.com/products/docker-desktop/).
