@@ -1,0 +1,9 @@
+# Ignorar datos de Docker
+postgres_data/
+
+# Ignorar archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de configuración personales
+*.log

@@ -1,0 +1,17 @@
+services:
+  db:
+    build: .
+    container_name: db_gimnasio
+    environment:
+      POSTGRES_USER: admin_gimnasio
+      POSTGRES_PASSWORD: "gimnasio2026!"
+      POSTGRES_DB: db_gimnasio
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init_db:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

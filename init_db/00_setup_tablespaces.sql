@@ -1,0 +1,1 @@
+CREATE TABLESPACE ts_historico LOCATION '/var/lib/postgresql/tablespace_historico';
