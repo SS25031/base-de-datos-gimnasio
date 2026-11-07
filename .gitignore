@@ -7,3 +7,6 @@ Thumbs.db
 
 # Ignorar archivos de configuración personales
 *.log
+
+#Ocultar archivo .env
+.env

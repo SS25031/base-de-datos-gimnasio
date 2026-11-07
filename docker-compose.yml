@@ -3,9 +3,9 @@ services:
     build: .
     container_name: db_gimnasio
     environment:
-      POSTGRES_USER: admin_gimnasio
-      POSTGRES_PASSWORD: "gimnasio2026!"
-      POSTGRES_DB: db_gimnasio
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
