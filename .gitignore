@@ -10,3 +10,6 @@ Thumbs.db
 
 #Ocultar archivo .env
 .env
+
+#Ignorar archivos locales de respaldo
+backups_locales/
