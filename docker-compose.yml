@@ -11,9 +11,14 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init_db:/docker-entrypoint-initdb.d
+      - backup_data:/backup_data
+      - wal_archive_data:/wal_archive
     # PARA EL ARCHIVADO WAL:
-    command: postgres -c archive_mode=on -c archive_command='test ! -f /var/lib/postgresql/wal_archive/%f && cp %p /var/lib/postgresql/wal_archive/%f'
+    command: postgres -c archive_mode=on -c archive_command='test ! -f /wal_archive/%f && cp %p /wal_archive/%f' -c wal_level=replica
     restart: unless-stopped
 
 volumes:
   postgres_data:
+  backup_data:
+    external: true
+  wal_archive_data:

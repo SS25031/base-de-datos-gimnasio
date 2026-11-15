@@ -1,0 +1,16 @@
+services:
+  db_recuperada:
+    image: postgres:16
+    container_name: db_recuperada
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5435:5432"
+    volumes:
+      - backup_data:/var/lib/postgresql/data
+
+volumes:
+  backup_data:
+    external: true

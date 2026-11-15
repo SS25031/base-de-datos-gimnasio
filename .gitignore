@@ -13,3 +13,5 @@ Thumbs.db
 
 #Ignorar archivos locales de respaldo
 backups_locales/
+
+docker-compose-pitr.yml
