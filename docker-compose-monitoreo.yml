@@ -1,0 +1,39 @@
+services:
+  postgres_exporter:
+    image: prometheuscommunity/postgres-exporter
+    container_name: pg_exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://${DB_USER}:${DB_PASSWORD}@db_gimnasio:5432/${DB_NAME}?sslmode=disable"
+    ports:
+      - "9187:9187"
+    networks:
+      - db_gimnasio_default
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - db_gimnasio_default
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - db_gimnasio_default
+
+networks:
+  db_gimnasio_default:
+    external: true
+
+volumes:
+  grafana_data:
