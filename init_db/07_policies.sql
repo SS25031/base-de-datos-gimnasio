@@ -9,6 +9,9 @@ ALTER TABLE actividades ENABLE ROW LEVEL SECURITY;
 -- Forzar cumplimiento incluso para el propietario
 ALTER TABLE actividades FORCE ROW LEVEL SECURITY;
 
+-- DAR ATRIBUTO BYPASSRLS al usuario_admin para que pueda ver todo
+ALTER ROLE usuario_admin BYPASSRLS;
+
 -- 2. Permitir consultar entrenadores para identificar al usuario
 GRANT SELECT ON TABLE entrenadores TO grp_entrenador;
 
