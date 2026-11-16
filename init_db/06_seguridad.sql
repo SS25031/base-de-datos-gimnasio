@@ -19,14 +19,23 @@ TO grp_admin;
 
 -- 3. PERMISOS PARA RECEPCIONISTA
 
-GRANT SELECT ON TABLE miembros, suscripciones, membresias
+GRANT SELECT ON TABLE suscripciones, membresias
 TO grp_recepcionista;
+
+-- Permisos para registrar miembros nuevos
+GRANT SELECT, INSERT ON TABLE miembros TO grp_recepcionista;
+
+-- Permisos para ver y crear suscripciones
+GRANT SELECT, INSERT ON TABLE suscripciones TO grp_recepcionista;
 
 GRANT INSERT, SELECT ON TABLE accesos, pagos
 TO grp_recepcionista;
 
+--RESTRICCIONES
 REVOKE UPDATE, DELETE ON TABLE pagos
 FROM grp_recepcionista;
+REVOKE UPDATE, DELETE ON TABLE suscripciones FROM grp_recepcionista;
+REVOKE UPDATE, DELETE ON TABLE miembros FROM grp_recepcionista;
 
 -- 4. PERMISOS PARA ENTRENADOR
 
