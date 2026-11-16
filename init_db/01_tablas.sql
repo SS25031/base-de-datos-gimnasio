@@ -78,7 +78,7 @@ CREATE TABLE Accesos (
     CONSTRAINT fk_accesos_miembros FOREIGN KEY (idMiembro) REFERENCES Miembros(idMiembro),
     CONSTRAINT fk_accesos_sedes FOREIGN KEY (idSede) REFERENCES Sedes(idSede),
     PRIMARY KEY(idAcceso, fechaHoraEntrada)
-);
+)PARTITION BY RANGE (fechaHoraEntrada);
 
 -- 8. Tabla: Suscripciones
 CREATE TABLE Suscripciones (
@@ -104,7 +104,7 @@ CREATE TABLE Pagos (
     updated_at TIMESTAMP NULL,
     CONSTRAINT fk_pagos_suscripciones FOREIGN KEY (idSuscripcion) REFERENCES Suscripciones(idSuscripcion),
     PRIMARY KEY(idPago, fechaPago)
-);
+)PARTITION BY RANGE(fechaPago);
 
 -- 10. Tabla: Actividades
 CREATE TABLE Actividades (
