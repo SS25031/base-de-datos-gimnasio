@@ -1,0 +1,20 @@
+services:
+  db_pitr:
+    image: postgres:16
+    container_name: db_pitr
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5436:5432"
+    volumes:
+      - backup_data:/var/lib/postgresql/data
+      - wal_archive_data:/wal_archive
+    command: postgres -c restore_command='cp /wal_archive/%f %p' -c recovery_target_time='2026-11-18 23:04:47' -c recovery_target_action='promote'
+
+volumes:
+  backup_data:
+    external: true
+  wal_archive_data:
+    external: true
