@@ -1,0 +1,23 @@
+services:
+  db_replica:
+    image: postgres:16
+    container_name: db_replica
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5437:5432"
+    volumes:
+      - replica_data:/var/lib/postgresql/data
+    networks:
+      - db_gimnasio_default
+    restart: unless-stopped
+
+volumes:
+  replica_data:
+    external: true
+
+networks:
+  db_gimnasio_default:
+    external: true

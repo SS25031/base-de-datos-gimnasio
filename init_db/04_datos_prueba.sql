@@ -123,3 +123,77 @@ INSERT INTO ReservasActividad (idActividad, idMiembro, fechaReserva, asistio) VA
 (2, 9, '2026-03-03 08:30:00', TRUE), -- Haaland a Potencia y Velocidad
 (4, 5, '2026-03-03 10:00:00', FALSE),-- Phil Heath a Cross-Training
 (4, 10, '2026-03-03 11:00:00', TRUE); -- Modric a Cross-Training
+
+
+
+
+-- 1. Generar 2,000 Miembros adicionales (IDs 11 al 2010)
+INSERT INTO Miembros (DUI, nombreMiembro, apellidoMiembro, correoMiembro, activo)
+SELECT
+    LPAD((20000000 + g)::text, 8, '0') || '-' || (g % 10),
+    'Miembro_' || g,
+    CASE (g % 5)
+        WHEN 0 THEN 'Modric'
+        WHEN 1 THEN 'Hernandez'
+        WHEN 2 THEN 'Martinez'
+        WHEN 3 THEN 'Gomez'
+        ELSE 'Lopez'
+    END,
+    'miembro_' || g || '@vidaactiva.com',
+    (g % 4 <> 0) -- 75% activos (TRUE) y 25% inactivos (FALSE) para el índice parcial
+FROM generate_series(11, 2010) AS g;
+
+-- 2. Generar 1,500 AreasSede adicionales (distribuidas en las 3 sedes: 1, 2 y 3)
+INSERT INTO AreasSede (idSede, nombreArea, capacidad)
+SELECT
+    1 + (g % 3),
+    'Zona Entrenamiento #' || g,
+    30
+FROM generate_series(11, 1510) AS g;
+
+-- 3. Generar 2,000 Suscripciones adicionales (enlazadas a las 5 membresías existentes)
+INSERT INTO Suscripciones (idMembresia, idMiembro, fechaInicio, fechaFin, estadoSuscripcion)
+SELECT
+    1 + (g % 5),
+    g,
+    '2026-01-01'::date + (g % 180),
+    '2026-12-31'::date,
+    (g % 3 <> 0) -- Mezcla de activas e inactivas para el índice parcial
+FROM generate_series(11, 2010) AS g;
+
+-- 4. Generar 2,000 Pagos (usando el precio exacto de Membresias y fechas dentro de 2026)
+INSERT INTO Pagos (idSuscripcion, monto, fechaPago)
+SELECT
+    s.idSuscripcion,
+    m.precio,
+    '2026-01-01 08:00:00'::timestamp + ((g - 11) * interval '3 hours')
+FROM generate_series(11, 2010) AS g
+JOIN Suscripciones s ON s.idSuscripcion = g
+JOIN Membresias m ON m.idMembresia = s.idMembresia;
+
+-- 5. Generar 1,500 Actividades adicionales (IDs 6 al 1505, repartidas entre 10 entrenadores)
+INSERT INTO Actividades (idEntrenador, nombreActividad, descripcion, fechaProgramada)
+SELECT
+    1 + (g % 10),
+    'Clase Funcional #' || g,
+    'Sesión de acondicionamiento físico y fuerza #' || g,
+    '2026-03-10 07:00:00'::timestamp + ((g - 11) * interval '2 hours')
+FROM generate_series(11, 1510) AS g;
+
+-- 6. Generar 2,000 ReservasActividad (cumpliendo la restricción uq_reserva_unica)
+INSERT INTO ReservasActividad (idActividad, idMiembro, fechaReserva, asistio)
+SELECT
+    6 + ((g - 11) % 1500),
+    g,
+    '2026-03-10 08:00:00'::timestamp + ((g - 11) * interval '1 hour'),
+    (g % 5 <> 0)
+FROM generate_series(11, 2010) AS g;
+
+-- 7. Generar 6,000 Accesos repartidos entre las particiones mensuales de 2026
+INSERT INTO Accesos (idMiembro, idSede, fechaHoraEntrada, autorizado)
+SELECT
+    11 + ((g - 11) % 2000),
+    1 + (g % 3),
+    '2026-01-01 06:00:00'::timestamp + ((g - 11) * interval '1 hour'),
+    (g % 10 <> 0)
+FROM generate_series(11, 6010) AS g;

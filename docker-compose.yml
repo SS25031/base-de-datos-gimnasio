@@ -9,9 +9,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init_db:/docker-entrypoint-initdb.d
-      - backup_data:/backup_data
+      - postgres_data:/var/lib/postgresql/data #aloja físicamente la base de datos.
+      - ./init_db:/docker-entrypoint-initdb.d #carpeta: Docker lee todos los scripts .sql
+      - backup_data:/backup_data #volumen que guarda los respaldos físicos 
       - wal_archive_data:/wal_archive
     # PARA EL ARCHIVADO WAL
     #Agrega la extensión shared_preload_libraries='pg_stat_statements para que el exporter tenga métricas que leer
@@ -23,3 +23,4 @@ volumes:
   backup_data:
     external: true
   wal_archive_data:
+    external: true
