@@ -14,3 +14,5 @@ Este repositorio contiene la implementación de la base de datos para el sistema
 3. Ejecutar el siguiente comando para levantar la base de datos desde cero:
    ```bash
    docker compose up -d --build
+
+

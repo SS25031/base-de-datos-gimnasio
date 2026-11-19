@@ -6,6 +6,6 @@ RUN mkdir -p /var/lib/postgresql/tablespace_historico && \
     chmod 700 /var/lib/postgresql/tablespace_historico
 
 # Carpeta para los archivos WAL
-RUN mkdir -p /var/lib/postgresql/wal_archive && \
-    chown postgres:postgres /var/lib/postgresql/wal_archive && \
-    chmod 700 /var/lib/postgresql/wal_archive
+RUN mkdir -p /wal_archive /backup_data && \
+    chown -R postgres:postgres /wal_archive /backup_data && \
+    chmod 700 /wal_archive /backup_data
