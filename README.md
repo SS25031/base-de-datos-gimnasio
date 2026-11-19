@@ -31,6 +31,8 @@ El diseño abarca todo el ciclo de vida de administración de bases de datos:
 
 ---
 
+![Diagrama Entidad-Relación - db_gimnasio](docs/ER-db-gimnasio/db_gimnasio%20-%20db_gimnasio%20-%20public.png)
+
 ## Estructura del Repositorio
 
 ```text
