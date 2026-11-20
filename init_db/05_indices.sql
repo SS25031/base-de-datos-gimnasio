@@ -137,3 +137,7 @@ ORDER BY grado_similitud DESC;
 
 EXPLAIN ANALYZE 
 SELECT * FROM Miembros WHERE apellidoMiembro % 'Mobric';
+
+CREATE UNIQUE INDEX idx_suscripciones_unicas_activas_miembros
+ON Suscripciones (idMiembro)
+WHERE estadoSuscripcion = TRUE;
