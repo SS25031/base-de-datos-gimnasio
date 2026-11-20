@@ -25,6 +25,9 @@ TO grp_recepcionista;
 -- Permisos para registrar miembros nuevos
 GRANT SELECT, INSERT ON TABLE miembros TO grp_recepcionista;
 
+-- Permitir que los triggers de auditoría registren operaciones del recepcionista
+GRANT INSERT ON TABLE Auditoria_Log TO grp_recepcionista;
+
 -- Permisos para ver y crear suscripciones
 GRANT SELECT, INSERT ON TABLE suscripciones TO grp_recepcionista;
 
@@ -76,3 +79,6 @@ IN ROLE grp_entrenador;
 CREATE ROLE roberto
 WITH LOGIN PASSWORD '123'
 IN ROLE grp_entrenador;
+
+-- Usuario dedicado para replicación en flujo (Alta Disponibilidad)
+CREATE ROLE replicador WITH REPLICATION LOGIN PASSWORD 'replica_pass';
