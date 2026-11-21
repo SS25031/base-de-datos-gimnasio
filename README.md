@@ -55,8 +55,9 @@ db_gimnasio/
 │   ├── 06_seguridad.sql            # Roles de grupo (NOLOGIN), privilegios y usuarios (LOGIN)
 │   └── 07_policies.sql             # Políticas de Seguridad a Nivel de Fila (RLS)
 ├── scripts_operaciones/
-│   └── backup.ps1                  # Automatización de respaldos lógicos con retención de 7 días
-└── docs/                           # Diagrama Entidad-Relación y evidencias de validación
+│   ├── backup_logico.ps1           # Automatización de respaldos lógicos (pg_dump) con retención de 7 días
+│   └── backup_fisico.ps1           # Automatización de respaldos físicos (pg_basebackup) con retención de 7 días
+└── docs/                           # Diagrama Entidad-Relación y evidencias de validación                          # Diagrama Entidad-Relación y evidencias de validación
 ```
 
 ---
@@ -119,7 +120,7 @@ En la tabla `Actividades` se habilitó y forzó el cumplimiento de RLS (`ENABLE`
 | Estrategia | Herramienta / Mecanismo | Objetivo Operativo |
 | :--- | :--- | :--- |
 | **Respaldo Lógico** | `pg_dump -Fc` + `backup.ps1` (Programador de Tareas a las 02:00 AM, retención de 7 días) | Copias portátiles en `./backups_locales` para restauración granular de tablas mediante `pg_restore`. |
-| **Respaldo Físico** | `pg_basebackup --tablespace-mapping` + volumen externo `backup_data` | Recuperación completa ante pérdida total del servidor, validada en el contenedor `db_recuperada` (puerto `5435`). |
+| **Respaldo Físico Automático** | `pg_basebackup --tablespace-mapping` + volumen externo `backup_data` + `backup_fisico.ps1` | Recuperación completa ante pérdida total del servidor, validada en el contenedor `db_recuperada` (puerto `5435`). |
 | **PITR (Recuperación Puntual)** | `wal_level = replica`, `archive_mode = on` + `recovery.signal` en `db_pitr` (puerto `5436`) | Reversión de errores lógicos graves hasta el segundo exacto previo al incidente ($\text{RPO} \approx 0$). |
 | **Alta Disponibilidad (HA)** | *Streaming Replication* activo-pasivo (`db_gimnasio` `:5432` -> `db_replica` `:5437`) | Réplica *Hot Standby* sincronizada en tiempo real con conmutación inmediata mediante `SELECT pg_promote();` y autorrecuperación (`unless-stopped`). |
 
